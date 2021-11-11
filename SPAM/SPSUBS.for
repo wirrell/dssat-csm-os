@@ -147,6 +147,7 @@ C-----------------------------------------------------------------------
 !  121         FORMAT(9("    ",A2,I1,A1), A8)
                WRITE(FRMT,'(I1)') N_LYR
                FRMT = '('//Trim(Adjustl(FRMT))//'(4X,A2,I1,A1),A8)'
+               WRITE (LUN,FRMT,ADVANCE='NO') ("RU",L,"D",L=1,N_LYR)
                WRITE (LUN,FRMT) ("ES",L,"D",L=1,N_LYR), 'TRWUD' 
             ELSE
 !              WRITE (LUN,122)("ES",L,"D",L=1,9, "        ES10D    RWUD")
