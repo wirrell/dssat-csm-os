@@ -153,6 +153,7 @@
       REAL        GROSTM      
 	REAL        GRRT
 	REAL        GRSTM
+      REAL        GRFCHECK
       REAL        HI
       REAL        HIP
       INTEGER     I           
@@ -1490,7 +1491,16 @@ C	         ECNP = (5.0 - 0.0114 * XSTAGE)/100.0 !Ear critical [N] (frac)
 	      GROLF = GROLF + LFWTD(I)
 	    ENDDO
 
-	    GRF = (CARBO-GRORT-GROEAR) / (GROLF+GROSTM)
+            ! Add check to ensure GROLF+GROSTM > 0, otherwise we get
+            ! a Floating-point exception here
+            GRFCHECK = GROLF + GROSTM
+            IF (GRFCHECK .GT. 0) THEN
+              GRF = (CARBO-GRORT-GROEAR) / (GROLF+GROSTM)
+            ELSE
+              GRF = 0
+            ENDIF
+
+
 	    IF (GRF .GT. 1.25) THEN
 	      GRF = 1.25
 	    ENDIF
