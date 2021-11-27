@@ -329,8 +329,11 @@ C-----------------------------------------------------------------------
         CALL GETLUN(OUTSN2O, NOUTDN)
         INQUIRE (FILE = OUTSN2O, EXIST = FEXIST)
         IF (FEXIST) THEN
+          ! Modified to write to FIFO
+!          OPEN (UNIT = NOUTDN, FILE = OUTSN2O, STATUS = 'OLD',
+!     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
           OPEN (UNIT = NOUTDN, FILE = OUTSN2O, STATUS = 'OLD',
-     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
         ELSE
           OPEN (UNIT = NOUTDN, FILE = OUTSN2O, STATUS = 'NEW',
      &      IOSTAT = ERRNUM)

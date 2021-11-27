@@ -96,8 +96,9 @@ C=====================================================================
       CALL GETLUN('SWBAL', LUNWBL)
       INQUIRE (FILE = SWBAL, EXIST = FEXIST)
       IF (FEXIST) THEN
+        ! Modified to write to FIFO
         OPEN (UNIT = LUNWBL, FILE = SWBAL, STATUS = 'OLD',
-     &    POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
       ELSE
         OPEN (UNIT = LUNWBL, FILE = SWBAL, STATUS = 'NEW')
         WRITE(LUNWBL,'("*WATER BALANCE OUTPUT FILE")')

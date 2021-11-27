@@ -77,8 +77,11 @@ C  Calls:     None
 !     Initialize daily plant nitrogen output file
         INQUIRE (FILE = OUTPN, EXIST = FEXIST)
         IF (FEXIST) THEN
+          ! Modified to write to FIFO
+!          OPEN (UNIT = NOUTDN, FILE = OUTPN, STATUS = 'OLD',
+!     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
           OPEN (UNIT = NOUTDN, FILE = OUTPN, STATUS = 'OLD',
-     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
           FIRST = .FALSE.  
         ELSE
           OPEN (UNIT = NOUTDN, FILE = OUTPN, STATUS = 'NEW',

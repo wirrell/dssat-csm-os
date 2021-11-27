@@ -48,8 +48,11 @@
         CALL GETLUN(SNSUM, LUNSNS)
         INQUIRE (FILE = SNSUM, EXIST = FEXIST)
         IF (FEXIST) THEN
+          ! Modified to write to FIFO
+!          OPEN (UNIT = LUNSNS, FILE = SNSUM, STATUS = 'OLD',
+!     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
           OPEN (UNIT = LUNSNS, FILE = SNSUM, STATUS = 'OLD',
-     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
         ELSE
           OPEN (UNIT = LUNSNS, FILE = SNSUM, STATUS = 'NEW',
      &      IOSTAT = ERRNUM)

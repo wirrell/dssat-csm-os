@@ -102,8 +102,11 @@ C-----------------------------------------------------------------------
       CALL GETLUN('OUTWAT', NOUTDW)
       INQUIRE (FILE = OUTWAT, EXIST = FEXIST)
       IF (FEXIST) THEN
+        ! Modified to write to FIFO
+!        OPEN (UNIT = NOUTDW, FILE = OUTWAT, STATUS = 'OLD',
+!     &    IOSTAT = ERRNUM, POSITION = 'APPEND')
         OPEN (UNIT = NOUTDW, FILE = OUTWAT, STATUS = 'OLD',
-     &    IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
       ELSE
         OPEN (UNIT = NOUTDW, FILE = OUTWAT, STATUS = 'NEW',
      &    IOSTAT = ERRNUM)

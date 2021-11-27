@@ -72,8 +72,11 @@ C-----------------------------------------------------------------------
           CALL GETLUN('OUTWTH', LUN)
           INQUIRE (FILE = OUTWTH, EXIST = FEXIST)
           IF (FEXIST) THEN
+            ! Modified to write to FIFO
+!            OPEN (UNIT = LUN, FILE = OUTWTH, STATUS = 'OLD',
+!     &        IOSTAT = ERRNUM, POSITION = 'APPEND')
             OPEN (UNIT = LUN, FILE = OUTWTH, STATUS = 'OLD',
-     &        IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
           ELSE
             OPEN (UNIT = LUN, FILE = OUTWTH, STATUS = 'NEW',
      &        IOSTAT = ERRNUM)

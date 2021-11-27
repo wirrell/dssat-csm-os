@@ -63,8 +63,11 @@ C=======================================================================
         OUTT = 'SoilTemp.OUT'
         INQUIRE (FILE = OUTT, EXIST = FEXIST)
         IF (FEXIST) THEN
+          ! Modified to write to FIFO
+!          OPEN (UNIT=NOUTDT, FILE=OUTT, STATUS='OLD',
+!     &      IOSTAT = ERRNUM, POSITION='APPEND')
           OPEN (UNIT=NOUTDT, FILE=OUTT, STATUS='OLD',
-     &      IOSTAT = ERRNUM, POSITION='APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
           !IF (RNMODE .NE. 'Q') THEN
           !ENDIF
         ELSE

@@ -160,8 +160,11 @@ C-----------------------------------------------------------------------
         IF (IDETO .EQ. 'Y') THEN
           INQUIRE (FILE = OUTO, EXIST = FEXIST)
           IF (FEXIST) THEN
+            ! Modified to write to FIFO
+!            OPEN (UNIT = NOUTDO, FILE = OUTO, STATUS = 'OLD',
+!     &        IOSTAT = ERRNUM, POSITION = 'APPEND')
             OPEN (UNIT = NOUTDO, FILE = OUTO, STATUS = 'OLD',
-     &        IOSTAT = ERRNUM, POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
           ELSE
             OPEN (UNIT = NOUTDO, FILE = OUTO, STATUS = 'NEW',
      &        IOSTAT = ERRNUM)

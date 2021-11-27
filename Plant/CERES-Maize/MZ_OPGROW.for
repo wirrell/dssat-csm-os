@@ -91,8 +91,11 @@ C  Calls:     None
         IF (FMOPT == 'A' .OR. FMOPT == ' ') THEN   ! VSH
           INQUIRE (FILE = OUTG, EXIST = FEXIST)
           IF (FEXIST) THEN
-            OPEN (UNIT=NOUTDG, FILE=OUTG, STATUS='OLD',
-     &        IOSTAT=ERRNUM, POSITION='APPEND')
+            ! Modified to write to FIFO
+!            OPEN (UNIT=NOUTDG, FILE=OUTG, STATUS='OLD',
+!     &        IOSTAT=ERRNUM, POSITION='APPEND')
+             OPEN (UNIT = NOUTDG, FILE = OUTG, STATUS = 'OLD',
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
             FIRST = .FALSE.  
           ELSE
             OPEN (UNIT=NOUTDG, FILE=OUTG, STATUS='NEW',

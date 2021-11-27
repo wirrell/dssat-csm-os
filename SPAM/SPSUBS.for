@@ -101,8 +101,11 @@ C=======================================================================
 
           INQUIRE (FILE = OUTET, EXIST = FEXIST)
           IF (FEXIST) THEN
+          ! Modified to write to FIFO
+!            OPEN (UNIT = LUN, FILE = OUTET, STATUS = 'OLD',
+!     &        POSITION = 'APPEND')
             OPEN (UNIT = LUN, FILE = OUTET, STATUS = 'OLD',
-     &        POSITION = 'APPEND')
+     &       ACTION = 'WRITE', ACCESS = 'STREAM', FORM = 'FORMATTED')
           ELSE
             OPEN (UNIT = LUN, FILE = OUTET, STATUS = 'NEW')
             WRITE(LUN,'("*SOIL-PLANT-ATMOSPHERE MODULE OUTPUT FILE")')
