@@ -66,7 +66,8 @@ C=======================================================================
         call getlun("Mulch.OUT", DLUN)
         INQUIRE (FILE = "Mulch.OUT", EXIST = FEXIST)
         IF (FEXIST) THEN
-          OPEN (UNIT = DLUN, FILE = "Mulch.OUT", POSITION = 'APPEND')
+          OPEN (UNIT = DLUN, FILE = "Mulch.OUT", ACTION = 'WRITE',
+     &        STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED')
         ELSE
           OPEN (UNIT = DLUN, FILE = "Mulch.OUT", STATUS = 'NEW')
           WRITE(DLUN,'("*Surface Mulch daily output file")')

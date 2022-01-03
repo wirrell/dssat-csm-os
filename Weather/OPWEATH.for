@@ -72,8 +72,9 @@ C-----------------------------------------------------------------------
           CALL GETLUN('OUTWTH', LUN)
           INQUIRE (FILE = OUTWTH, EXIST = FEXIST)
           IF (FEXIST) THEN
-            OPEN (UNIT = LUN, FILE = OUTWTH, STATUS = 'OLD',
-     &        IOSTAT = ERRNUM, POSITION = 'APPEND')
+            OPEN (UNIT = LUN, FILE = OUTWTH, ACTION = 'WRITE',
+     &          STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED',
+     &          IOSTAT=ERRNUM)
           ELSE
             OPEN (UNIT = LUN, FILE = OUTWTH, STATUS = 'NEW',
      &        IOSTAT = ERRNUM)

@@ -91,8 +91,9 @@ C  Calls:     None
         IF (FMOPT == 'A' .OR. FMOPT == ' ') THEN   ! VSH
           INQUIRE (FILE = OUTG, EXIST = FEXIST)
           IF (FEXIST) THEN
-            OPEN (UNIT=NOUTDG, FILE=OUTG, STATUS='OLD',
-     &        IOSTAT=ERRNUM, POSITION='APPEND')
+            OPEN (UNIT = NOUTDG, FILE = OUTG, ACTION = 'WRITE',
+     &          STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED',
+     &          IOSTAT=ERRNUM)
             FIRST = .FALSE.  
           ELSE
             OPEN (UNIT=NOUTDG, FILE=OUTG, STATUS='NEW',

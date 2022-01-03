@@ -101,8 +101,8 @@ C=======================================================================
 
           INQUIRE (FILE = OUTET, EXIST = FEXIST)
           IF (FEXIST) THEN
-            OPEN (UNIT = LUN, FILE = OUTET, STATUS = 'OLD',
-     &        POSITION = 'APPEND')
+          OPEN (UNIT = LUN, FILE = OUTET, ACTION = 'WRITE',
+     &        STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED')
           ELSE
             OPEN (UNIT = LUN, FILE = OUTET, STATUS = 'NEW')
             WRITE(LUN,'("*SOIL-PLANT-ATMOSPHERE MODULE OUTPUT FILE")')

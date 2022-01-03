@@ -102,8 +102,9 @@ C-----------------------------------------------------------------------
       CALL GETLUN('OUTWAT', NOUTDW)
       INQUIRE (FILE = OUTWAT, EXIST = FEXIST)
       IF (FEXIST) THEN
-        OPEN (UNIT = NOUTDW, FILE = OUTWAT, STATUS = 'OLD',
-     &    IOSTAT = ERRNUM, POSITION = 'APPEND')
+        OPEN (UNIT = NOUTDW, FILE = OUTWAT, ACTION = 'WRITE',
+     &      STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED',
+     &      IOSTAT=ERRNUM)
       ELSE
         OPEN (UNIT = NOUTDW, FILE = OUTWAT, STATUS = 'NEW',
      &    IOSTAT = ERRNUM)

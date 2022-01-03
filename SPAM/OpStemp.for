@@ -63,8 +63,9 @@ C=======================================================================
         OUTT = 'SoilTemp.OUT'
         INQUIRE (FILE = OUTT, EXIST = FEXIST)
         IF (FEXIST) THEN
-          OPEN (UNIT=NOUTDT, FILE=OUTT, STATUS='OLD',
-     &      IOSTAT = ERRNUM, POSITION='APPEND')
+          OPEN (UNIT = NOUTDT, FILE = OUTT, ACTION = 'WRITE',
+     &        STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED',
+     &        IOSTAT=ERRNUM)
           !IF (RNMODE .NE. 'Q') THEN
           !ENDIF
         ELSE

@@ -512,8 +512,9 @@ C-------------------------------------------------------------------
         IF (FMOPT == 'A' .OR. FMOPT == ' ') THEN   ! VSH
         INQUIRE (FILE = OUTS, EXIST = FEXIST)
         IF (FEXIST) THEN
-          OPEN (UNIT = NOUTDS, FILE = OUTS, STATUS = 'OLD',
-     &      IOSTAT = ERRNUM, POSITION = 'APPEND')
+          OPEN (UNIT = NOUTDS, FILE = OUTS, ACTION = 'WRITE',
+     &        STATUS = 'OLD', ACCESS = 'STREAM', FORM='FORMATTED',
+     &        IOSTAT=ERRNUM)
         ELSE
           OPEN (UNIT = NOUTDS, FILE = OUTS, STATUS = 'NEW',
      &      IOSTAT = ERRNUM)
@@ -877,6 +878,9 @@ C-------------------------------------------------------------------
           IF (FEXIST) THEN
             OPEN (UNIT = SLUN, FILE = SEVAL, STATUS = 'OLD',
      &        IOSTAT = ERRNUM, POSITION = 'APPEND')
+          OPEN (UNIT = SLUN, FILE = SEVAL, ACTION = 'WRITE', 
+     &          IOSTAT=ERRNUM, STATUS = 'OLD', ACCESS = 'STREAM',
+     &          FORM='FORMATTED')
           ELSE
             OPEN (UNIT = SLUN, FILE = SEVAL, STATUS = 'NEW',
      &        IOSTAT = ERRNUM)
