@@ -1292,7 +1292,12 @@ C	         ECNP = (5.0 - 0.0114 * XSTAGE)/100.0 !Ear critical [N] (frac)
   	  K1 =  0.425 + (0.245*EXP(-((Z2STAGE-1.03)**2)/(0.0467)))
 ! JIL 09/07/2007 Z2STAGE (Phenology scale, 0-1-2) calculated in PHENOL
 ! JIL Intercepted PAR (MJ/plant d)
-	  IPAR = PAR/PLTPOP * (1.0 - EXP(-K1 * LAI))
+! Ensure PLTPOP is not 0 to stop divide by zero error on non-germination
+          IF (PLTPOP .EQ. 0) THEN
+                  IPAR = 0
+          ELSE
+                  IPAR = PAR/PLTPOP * (1.0 - EXP(-K1 * LAI))
+          ENDIF
         PCARB = IPAR * RUE                       !RUE read from ECO file
 
           !-------------------------------------------------------------
