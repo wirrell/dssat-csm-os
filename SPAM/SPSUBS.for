@@ -40,8 +40,8 @@ C=======================================================================
       INTEGER NAVWB, RUN, YEAR, YRDOY, L
       INTEGER REPNO, N_LYR
 
-      REAL EF, EM, EO, EP, ES, ET, EOS, EOP, TRWU, RWU(NL), TRWUP !GRW add RWU
-      REAL SWDELTS(NL), SWDELTU(NL), SWDELTX(NL), UPFLOW(NL) ! GRW
+      REAL EF, EM, EO, EP, ES, ET, EOS, EOP, TRWU, TRWUP !GRW add RWU
+      REAL SWDELTS(NL), SWDELTU(NL), SWDELTX(NL), UPFLOW(NL), RWU(NL) ! GRW
       REAL REFET, KCB, KE, KC
       REAL CEF, CEM, CEO, CEP, CES, CET, CEVAP
       REAL ESAA, EMAA, EPAA, ETAA, EFAA, EOAA, EOPA, EOSA
