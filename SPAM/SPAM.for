@@ -21,6 +21,7 @@ C  04/01/2004 CHP/US Added Penman - Meyer routine for potential ET
 !                 FILEX parameter MESEV
 !  12/09/2008 CHP Remove METMP
 !  10/16/2020 CHP Cumulative "soil" evaporation includes mulch and flood evap
+!  01/27/2022 GRW Added RWU, TRWUP, UPFLOW, SWDELTX to OPSPAM call for printout
 C-----------------------------------------------------------------------
 C  Called by: Main
 C  Calls:     XTRACT, OPSPAM    (File SPSUBS.for)
@@ -223,9 +224,10 @@ C=======================================================================
 
 !     Call OPSPAM to open and write headers to output file
       IF (IDETW .EQ. 'Y') THEN
-        CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU,
-     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, 
-     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD,
+        CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU, RWU, TRWUP, !GRW
+     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, SWDELTX, !GRW
+     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD, SWDELTU, !GRW
+     &    SWDELTS, UPFLOW, !GRW
      &    ES_LYR, SOILPROP)
       ENDIF
 
@@ -497,9 +499,10 @@ C KB
       ENDIF
 
       IF (IDETW .EQ. 'Y') THEN
-        CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU,
-     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, 
-     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD,
+        CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU, RWU, TRWUP, !GRW
+     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, SWDELTX, !GRW
+     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD, SWDELTU, !GRW
+     &    SWDELTS, UPFLOW, !GRW
      &    ES_LYR, SOILPROP)
       ENDIF
 
@@ -549,9 +552,10 @@ C-----------------------------------------------------------------------
 !     &    SRFTEMP, ST)                                    !Output
 !      END SELECT
 !
-      CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU,
-     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, 
-     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD,
+      CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU, RWU, TRWUP, !GRW
+     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, SWDELTX, !GRW
+     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD, SWDELTU, !GRW
+     &    SWDELTS, UPFLOW, !GRW
      &    ES_LYR, SOILPROP)
 
       IF (CROP .NE. 'FA' .AND. MEPHO .EQ. 'L') THEN
@@ -569,9 +573,10 @@ C-----------------------------------------------------------------------
 !***********************************************************************
       ELSEIF (DYNAMIC .EQ. SEASEND) THEN
 C-----------------------------------------------------------------------
-      CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU,
-     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, 
-     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD,
+      CALL OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU, RWU, TRWUP, !GRW
+     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, SWDELTX, !GRW
+     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD, SWDELTU, !GRW
+     &    SWDELTS, UPFLOW, !GRW
      &    ES_LYR, SOILPROP)
 
 !     ---------------------------------------------------------

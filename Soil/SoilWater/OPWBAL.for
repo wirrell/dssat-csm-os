@@ -11,7 +11,7 @@ C-----------------------------------------------------------------------
 C  Called from:   WATBAL
 C  Calls:         None
 C=======================================================================
-      SUBROUTINE OPWBAL(CONTROL, ISWITCH, 
+      SUBROUTINE OPWBAL(CONTROL, ISWITCH,
      &    CRAIN, DLAYR, FLOODWAT, IRRAMT, LL, MULCH,      !Input
      &    NLAYR, RUNOFF, SOILPROP, SW, TDFC, TDFD,        !Input
      &    TDRAIN, TRUNOF, WTDEP)                          !Input
@@ -36,7 +36,7 @@ C=======================================================================
 
       REAL AVWTD, CRAIN, IRRAMT, PESW, TDFC, TDFD, TDRAIN, TLL
       REAL TOTBUNDRO, TOTIR, TRUNOF, TSW, WTDEP, MULCHWAT
-      REAL, DIMENSION(NL) :: DLAYR, LL, SW
+      REAL, DIMENSION(NL) :: DLAYR, LL, SW 
       REAL RUNOFF        
 
       LOGICAL FEXIST, DOPRINT
@@ -175,7 +175,7 @@ C-----------------------------------------------------------------------
      &      MULCHWAT, 0.0, 0.0, 0.0, 
      &      (SW(L),L=1,N_LYR)
  1300     FORMAT(1X,I4,1X,I3.3,3(1X,I5),3(1X,I6),3(1X,I5),
-     &      F8.2,2F6.1,F7.2,
+     &      F8.2,2F6.1,F7.2,10(F8.3), ! GRW
      &      10(F8.3))  
 
         ELSE        !match old printout
@@ -273,7 +273,7 @@ C-----------------------------------------------------------------------
             WRITE (NOUTDW,1300)YEAR,DOY,MOD(DAS,100000), NINT(TSW), 
      &      NINT(PESW*10),NINT(TRUNOF),NINT(TDRAIN),NINT(CRAIN),
      &        NAP, NINT(TOTIR),NINT(AVWTD), 
-     &        MULCHWAT, TDFD*10., TDFC*10., RUNOFF, 
+     &        MULCHWAT, TDFD*10., TDFC*10., RUNOFF,
      &        (SW(L),L=1,N_LYR)
 
           ELSE        !match old printout

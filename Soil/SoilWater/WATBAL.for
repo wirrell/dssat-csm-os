@@ -214,7 +214,7 @@ C=======================================================================
      &    TDFC, TDFD, TDRAIN, TRUNOF, TSW, TSWINI)
 
 !       Call OPWBAL to write headers to output file
-        CALL OPWBAL(CONTROL, ISWITCH, 
+        CALL OPWBAL(CONTROL, ISWITCH, SWDELTX, !GRW
      &    CRAIN, DLAYR, FLOODWAT, IRRAMT, LL, MULCH,      !Input
      &    NLAYR, RUNOFF, SOILPROP, SW, TDFC, TDFD,        !Input
      &    TDRAIN, TRUNOF, WTDEP)                          !Input
@@ -499,7 +499,7 @@ C         Calculate soil water table depth
 C-----------------------------------------------------------------------
       IF (ISWWAT .NE. 'Y') RETURN
 
-      CALL OPWBAL(CONTROL, ISWITCH, 
+      CALL OPWBAL(CONTROL, ISWITCH, SWDELTX, !GRW
      &    CRAIN, DLAYR, FLOODWAT, IRRAMT, LL, MULCH,      !Input
      &    NLAYR, RUNOFF, SOILPROP, SW, TDFC, TDFD,        !Input
      &    TDRAIN, TRUNOF, WTDEP)                          !Input
@@ -525,7 +525,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
       IF (ISWWAT .NE. 'Y') RETURN
 
-      CALL OPWBAL(CONTROL, ISWITCH, 
+      CALL OPWBAL(CONTROL, ISWITCH, SWDELTX, !GRW
      &    CRAIN, DLAYR, FLOODWAT, IRRAMT, LL, MULCH,      !Input
      &    NLAYR, RUNOFF, SOILPROP, SW, TDFC, TDFD,        !Input
      &    TDRAIN, TRUNOF, WTDEP)                          !Input

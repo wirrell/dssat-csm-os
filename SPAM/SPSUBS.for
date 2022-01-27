@@ -7,13 +7,16 @@ C  11/16/2001 CHP Written
 C  06/07/2002 GH  Modified for crop rotations
 C  08/20/2002 GH  Modified for Y2K
 C  02/04/2005 CHP Added new variables to Summary.out: EPCM, ESCM
+C  01/27/2022 GRW Added RWU, TRWUP, SWDELTX, SWDELTU, SWDELTS, UPFLOW to
+C                 printout
 C-----------------------------------------------------------------------
 C  Called from:   SPAM
 C  Calls:         None
 C=======================================================================
-      SUBROUTINE OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU,
-     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, 
-     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD,
+      SUBROUTINE OPSPAM(CONTROL, ISWITCH, FLOODWAT, TRWU, RWU, TRWUP, !GRW
+     &    CEF, CEM, CEO, CEP, CES, CET, CEVAP, EF, EM, SWDELTX,!GRW
+     &    EO, EOP, EOS, EP, ES, ET, TMAX, TMIN, SRAD, SWDELTU, !GRW
+     &    SWDELTS, UPFLOW, !GRW
      &    ES_LYR, SOILPROP)
 
 !-----------------------------------------------------------------------
@@ -37,7 +40,8 @@ C=======================================================================
       INTEGER NAVWB, RUN, YEAR, YRDOY, L
       INTEGER REPNO, N_LYR
 
-      REAL EF, EM, EO, EP, ES, ET, EOS, EOP, TRWU !JZW add TRWU
+      REAL EF, EM, EO, EP, ES, ET, EOS, EOP, TRWU, RWU(NL), TRWUP !GRW add RWU
+      REAL SWDELTS(NL), SWDELTU(NL), SWDELTX(NL), UPFLOW(NL) ! GRW
       REAL REFET, KCB, KE, KC
       REAL CEF, CEM, CEO, CEP, CES, CET, CEVAP
       REAL ESAA, EMAA, EPAA, ETAA, EFAA, EOAA, EOPA, EOSA
@@ -147,11 +151,24 @@ C-----------------------------------------------------------------------
 !  121         FORMAT(9("    ",A2,I1,A1), A8)
                WRITE(FRMT,'(I1)') N_LYR
                FRMT = '('//Trim(Adjustl(FRMT))//'(4X,A2,I1,A1),A8)'
-               WRITE (LUN,FRMT,ADVANCE='NO') ("RU",L,"D",L=1,N_LYR)
-               WRITE (LUN,FRMT) ("ES",L,"D",L=1,N_LYR), 'TRWUD' 
+               WRITE (LUN,FRMT,ADVANCE='NO') ("RU",L,"D",L=1,N_LYR) !GRW
+               WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"S",L=1,N_LYR) !GRW
+               WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"U",L=1,N_LYR) !GRW
+               WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"X",L=1,N_LYR) !GRW
+               WRITE (LUN,FRMT,ADVANCE='NO') ("UP",L,"F",L=1,N_LYR) !GRW
+               WRITE (LUN,'(A8)',ADVANCE='NO')("    TRWD")!GRW
+               WRITE (LUN,'(A8)',ADVANCE='NO')("    TRWP")!GRW
+               WRITE (LUN,FRMT) ("ES",L,"D",L=1,N_LYR) !GRW
             ELSE
 !              WRITE (LUN,122)("ES",L,"D",L=1,9, "        ES10D    RWUD")
-              WRITE (LUN,122)("ES",L,"D",L=1,9), "  ES10D   TRWUD"  !VSH
+              WRITE (LUN,FRMT,ADVANCE='NO') ("RU",L,"D",L=1,N_LYR) !GRW
+              WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"S",L=1,N_LYR) !GRW
+              WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"U",L=1,N_LYR) !GRW
+              WRITE (LUN,FRMT,ADVANCE='NO') ("SD",L,"X",L=1,N_LYR) !GRW
+              WRITE (LUN,FRMT,ADVANCE='NO') ("UP",L,"F",L=1,N_LYR) !GRW
+              WRITE (LUN,'(A8)',ADVANCE='NO')("    TRWD")!GRW
+              WRITE (LUN,'(A8)',ADVANCE='NO')("    TRWP")!GRW
+              WRITE (LUN,122)("ES",L,"D",L=1,9), "  ES10D" !GRW
   122         FORMAT(9("    ",A2,I1,A1),A16)
             ENDIF
             END IF   ! VSH
@@ -267,14 +284,28 @@ C-----------------------------------------------------------------------
           
             IF (ISWITCH % MESEV == 'S') THEN
               IF (SOILPROP % NLAYR < 11) THEN
-                WRITE(LUN,'(11F8.3)') ES_LYR(1:N_LYR) , TRWU
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') RWU(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTS(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTU(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTX(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') UPFLOW(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') TRWU !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') TRWUP !GRW
+                WRITE(LUN,'(11F8.3)') ES_LYR(1:N_LYR) !GRW
               ELSE
                 ES10 = 0.0
                 DO L = 10, SOILPROP % NLAYR
                   ES10 = ES10 + ES_LYR(L)
                 ENDDO
 !               WRITE(LUN,'(10F8.3)') ES_LYR(1:9), ES10
-                WRITE(LUN,'(11F8.3)') ES_LYR(1:9), ES10, TRWU !VSH
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') RWU(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTS(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTU(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') SWDELTX(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') UPFLOW(1:N_LYR) !GRW
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') TRWU
+                WRITE(LUN,'(11F8.3)',ADVANCE='NO') TRWUP
+                WRITE(LUN,'(11F8.3)') ES_LYR(1:9), ES10 !GRW
               ENDIF    
             ELSE
               WRITE(LUN,'(" ")')
