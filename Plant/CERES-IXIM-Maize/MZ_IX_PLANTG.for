@@ -213,41 +213,43 @@ C ** JIL Calculating light response curve parameters for each leaf
 	    CVTY(I) = 0.0
 	    INSL(I) = 0.0
 	    IF(GLA(I) .GT. 0.0) THEN
-	      XX = LAP(I)/YX(I)
-	      IF(XX .LT. 0.99) THEN    ! Expanding leaf
-	        AYZ = 0.66
-	        AXX = 0.34
-	        AK = 10.0
-	        AXZ = 0.5
-	        CX = 0.95
-	        CK = 3.55
-	        CXZ = 0.186
-	        INSL(I) = 0.06
-	      ELSE                     ! Leaf maturing after complete expansion
-	        IF(APK(I) .LT. 1.0) THEN
-		        APK(I) = GDDAE
-	        ENDIF
-!            CHP 11/27/2007 CHECK FOR LFL(I) = 0.
-              IF (LFL(I) > 1.E-10) THEN
-	          XX = (GDDAE-APK(I))/LFL(I)
-              ELSE
-	          XX = 1.0
-              ENDIF
+              IF(YX(I) .GT. 0.0) THEN   ! div by 0 check
+	        XX = LAP(I)/YX(I)
+	        IF(XX .LT. 0.99) THEN    ! Expanding leaf
+	          AYZ = 0.66
+	          AXX = 0.34
+	          AK = 10.0
+	          AXZ = 0.5
+	          CX = 0.95
+	          CK = 3.55
+	          CXZ = 0.186
+	          INSL(I) = 0.06
+	        ELSE                     ! Leaf maturing after complete expansion
+	          IF(APK(I) .LT. 1.0) THEN
+		          APK(I) = GDDAE
+	          ENDIF
+!              CHP 11/27/2007 CHECK FOR LFL(I) = 0.
+                IF (LFL(I) > 1.E-10) THEN
+	            XX = (GDDAE-APK(I))/LFL(I)
+                ELSE
+	            XX = 1.0
+                ENDIF
 
-	        AYZ = 0.18
-	        AXX = 0.85
-	        AK = -7.0
-	        AXZ = 0.47
-	        CX = 0.95
-	        CK = -16.7
-	        CXZ = 0.88
-              EXPONENT = 8.*(XX-0.75)
-              IF (EXPONENT < -40.) THEN
-                INSL(I) = 0.06
-              ELSEIF (EXPONENT > 40.) THEN
-                INSL(I) = 0.04
-              ELSE
-	          INSL(I) = 0.04+(0.02/(1.+EXP(EXPONENT)))
+	          AYZ = 0.18
+	          AXX = 0.85
+	          AK = -7.0
+	          AXZ = 0.47
+	          CX = 0.95
+	          CK = -16.7
+	          CXZ = 0.88
+                EXPONENT = 8.*(XX-0.75)
+                IF (EXPONENT < -40.) THEN
+                  INSL(I) = 0.06
+                ELSEIF (EXPONENT > 40.) THEN
+                  INSL(I) = 0.04
+                ELSE
+	            INSL(I) = 0.04+(0.02/(1.+EXP(EXPONENT)))
+                ENDIF
               ENDIF
             ENDIF
 
