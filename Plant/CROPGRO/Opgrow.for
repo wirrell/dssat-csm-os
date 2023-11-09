@@ -11,6 +11,7 @@ C  06/19/2001 GH  Modified output format
 C  08/20/2002 GH  Modified for Y2K
 C  07/08/2003 CHP Changed senescence output.
 C  03/24/2004 CHP Added P stresses to PlantGro.out
+C  11/08/2023  FO Added LINTW and LINTP for lint growth outputs.
 C-----------------------------------------------------------------------
 C  Called by: PLANT
 C  Calls:     None
@@ -23,7 +24,7 @@ C  Calls:     None
      &    RLV, RSTAGE, RTDEP, RTWT, SATFAC, SDWT, SEEDNO, 
      &    SENESCE, SLA, STMWT, SWFAC, TGRO, TGROAV, TOPWT, 
      &    TOTWT, TURFAC, VSTAGE, WTLF, WTNCAN, WTNLF, WTNST, 
-     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT) 
+     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW)
 !    &    EOP, TRWUP, WRDOTN)
 
 !-----------------------------------------------------------------------
@@ -51,7 +52,7 @@ C  Calls:     None
       REAL GROWTH, GRWRES, HI, HIP, MAINR, NSTRES
       REAL PCLSD, PCCSD, PCNL, PG, PODNO, PODWT, PODWTD
       REAL RHOL, RHOS, RTDEP, RTWT, STMWT, SDWT, SEEDNO
-      REAL SDSIZE, SHELLW, SHELPC, SLA
+      REAL SDSIZE, SHELLW, SHELPC, SLA, LINTW, LINTP
       REAL SATFAC, SWFAC, TGROAV, TOPWT, TOTWT, TURFAC
       REAL VSTAGE, WTLF, XLAI
 !     REAL EOP, TRWUP, WRDOTN
@@ -161,6 +162,7 @@ C  Calls:     None
         WRITE (NOUTDG,200, ADVANCE='NO')
   200   FORMAT('@YEAR DOY   DAS   DAP',
      &         '   L#SD   GSTD   LAID   LWAD   SWAD   GWAD',
+     &         '  LINTW  LINTP',
      &         '   RWAD   VWAD   CWAD   G#AD    GWGD   HIAD   PWAD',
      &         '   P#AD   WSPD   WSGD   NSTD')
 
@@ -359,16 +361,21 @@ C-----------------------------------------------------------------------
           ENDIF
 
           VWAD = NINT(WTLF*10. + STMWT*10.)
+          
+          IF(SDWT .GT. 0.0) THEN
+            LINTP = (LINTW*100.)/SDWT
+          ENDIF
 
           IF (FMOPT == 'A' .OR. FMOPT == ' ') THEN   ! VSH
           WRITE (NOUTDG,310, ADVANCE='NO')
      &        YEAR, DOY, DAS, DAP, VSTAGE, RSTAGE, XLAI,
      &        NINT(WTLF*10.), NINT(STMWT*10.), NINT(SDWT*10.),
+     &        NINT(LINTW*10.), LINTP,
      &        NINT(RTWT*10.), VWAD, NINT(TOPWT*10.), NINT(SEEDNO), 
      &        SDSIZE, HI, NINT(PODWT*10.), NINT(PODNO), SWF_AV, TUR_AV,
      &        NST_AV
   310     FORMAT (1X,I4,1X,I3.3,2(1X,I5),
-     &        1X,F6.1,1X,I6,1X,F6.3,   7(1X,I6),
+     &        1X,F6.1,1X,I6,1X,F6.3,4(1X,I6),1X,F6.2,4(1X,I6),
      &        1X,F7.1,1X,F6.3,2(1X,I6),3(1X,F6.3))
 
 !          IF (ISWPHO .NE. 'N') THEN
