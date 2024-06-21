@@ -37,7 +37,8 @@ C  07/08/2003 CHP Added KSEVAP for export to soil evaporation routines.
 !  06/15/2022 CHP Added CropStatus
 !  01/26/2023 CHP Reduce compile warnings: add EXTERNAL stmts, remove 
 !                 unused variables, shorten lines.
-!  11/08/2023  FO Added parameters for lint growth rate in GROW. 
+!  11/08/2023  FO Added parameters for lint growth rate in GROW.
+!  21/06/2024  FO Added Lint Yield to OPHARV. 
 C=======================================================================
 
       SUBROUTINE CROPGRO(CONTROL, ISWITCH, 
@@ -422,7 +423,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT,                                   !Input
+     &    YRNR7, YRPLT, LINTW,                            !Input
      &    SDWTAH)                                         !Output
 
 !     If this is not a sequenced run, don't use any previously calculated
@@ -661,7 +662,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT,                                   !Input
+     &    YRNR7, YRPLT, LINTW,                            !Input
      &    SDWTAH)                                         !Output
 
 ! Zero the value of HARVRES composite variable here 
@@ -1332,7 +1333,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT,                                   !Input
+     &    YRNR7, YRPLT, LINTW,                            !Input
      &    SDWTAH)                                         !Output
 
 !     Call PlantNBal only for seasonal output.

@@ -32,7 +32,7 @@ C=======================================================================
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT,                                   !Input
+     &    YRNR7, YRPLT, LINTW,                            !Input
      &    SDWTAH)                                         !Output
 
 C-----------------------------------------------------------------------
@@ -65,7 +65,7 @@ C-----------------------------------------------------------------------
 
       REAL BIOMAS, BWAH, CANHT, CANNAA, CANWAA, HI, HWAH, HWAM
       REAL LAIMX, PCLSD, PCNSD, PODWT, PODNO, PSDWT, PSPP
-      REAL SDRATE, SDWT, SDWTAH, SEEDNO, EYLD
+      REAL SDRATE, SDWT, SDWTAH, SEEDNO, EYLD, LINTW
       REAL THRES, TOPWT, VSTAGE
       REAL WTNCAN, WTNFX, WTNSD, WTNST, WTNUP, XLAI
       REAL, DIMENSION(2) :: HARVFRAC
@@ -349,7 +349,7 @@ C-----------------------------------------------------------------------
       
       ! 2024-06-20 FO - Economic Yield for Cotton.
       IF(CROP .EQ. 'CO') THEN
-        EYLD = -99.0
+        EYLD = LINTW
       ENDIF
 
 !-----------------------------------------------------------------------
