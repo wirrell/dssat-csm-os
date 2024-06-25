@@ -1570,7 +1570,8 @@ C=======================================================================
 !            carbon will allow, and nodules are not grown explicitly) 
 ! LAIMX    Maximum leaf area index this season (m2[leaf] / m2[ground])
 ! LINC     Line number of input file 
-! LNUM     Current line number of input file 
+! LNUM     Current line number of input file
+! LTDOT    Net Lint growth rate (g/m2/d)
 ! LUNCRP   Logical unit number for FILEC (*.spe file) 
 ! LUNECO   Logical unit number for FILEE (*.eco file) 
 ! LUNIO    Logical unit number for FILEIO 

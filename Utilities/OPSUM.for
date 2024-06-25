@@ -26,7 +26,7 @@ C                   HIAM, EPCM, ESCM
 !  03/27/2012 CHP Fixed format bug for very large HWUM
 !  07/19/2016 CHP Add cumulative N2O emissions in Nitrogen section
 !  09/09/2016 CHP Add cumulative CO2 emissions from OC decomposition
-!  06/20/2024  FO Add Economic Yield
+!  06/20/2024  FO Added Economic Yield
 C=======================================================================
 
       MODULE SumModule
@@ -82,7 +82,7 @@ C=======================================================================
         REAL HWAHF, FBWAH
 
 !       Added 2024-06-20 FO Economic Yield
-        REAL EYLD
+        REAL EYLDH
 
       End Type SummaryType
 
@@ -174,7 +174,7 @@ C-----------------------------------------------------------------------
       REAL HWAHF, FBWAH
       
 !     Added 2024-06-20 FO Economic Yield
-      REAL EYLD
+      REAL EYLDH
 
       LOGICAL FEXIST
 
@@ -415,7 +415,7 @@ C     Initialize OPSUM variables.
       SUMDAT % CRST   = -99   !End of season crop status code
       
 !     Economic Yield
-      SUMDAT % EYLD   = -99.0
+      SUMDAT % EYLDH  = -99.0
 
       CALL GET('WEATHER','WSTA',WSTAT)
 !      IF (LenString(WSTAT) < 1) THEN
@@ -517,7 +517,7 @@ C     Initialize OPSUM variables.
 
       CRST   = SUMDAT % CRST  !End of season crop status code
       
-      EYLD   = SUMDAT % EYLD  !Economic Yield
+      EYLDH  = SUMDAT % EYLDH  !Economic Yield
 
       CALL GET('WEATHER','WYEAR',WYEAR)
       CALL GET('FIELD','CYCRD',LATI)
@@ -603,8 +603,8 @@ C-------------------------------------------------------------------
      &'........................................ ',
      &'DATES..................................................  ',
      &'DRY WEIGHT, YIELD AND YIELD COMPONENTS....................',
-     &'............................   ',
-     &'FRESH WEIGHT.........................  ',
+     &'....................   ',
+     &'FRESH WEIGHT.................................  ',
      &'WATER...............................................  ',
      &'NITROGEN..................................................  ',
      &'PHOSPHORUS............  ',
@@ -624,10 +624,10 @@ C-------------------------------------------------------------------
      &   'FNAM.... WSTA.... WYEAR SOIL_ID... ',
      &   '            XLAT            LONG      ELEV  ',
      &   '  SDAT    PDAT    EDAT    ADAT    MDAT    HDAT   HYEAR',
-     &   '  DWAP    CWAM    HWAM    HWAH    BWAH    EYLD  PWAM',
+     &   '  DWAP    CWAM    HWAM    HWAH    BWAH  PWAM',
 !    &   '    HWUM  H#AM    H#UM  HIAM  LAIX',
      &   '    HWUM    H#AM    H#UM  HIAM  LAIX',
-     &   '   FCWAM   FHWAM   HWAHF   FBWAH   FPWAM',
+     &   '   FCWAM   FHWAM   HWAHF   FBWAH   FPWAM   EYLDH',
      &   '  IR#M  IRCM  PRCM  ETCM  EPCM  ESCM  ROCM  DRCM  SWXM',
      &   '  NI#M  NICM  NFXM  NUCM  NLCM  NIAM NMINC  CNAM  GNAM N2OEM',
 !    &   '  NI#M  NICM  NFXM  NUCM  NLCM  NIAM  CNAM  GNAM N2OGC',
@@ -654,8 +654,7 @@ C-------------------------------------------------------------------
      &    CROP, MODEL, CONTROL%FILEX(1:8), TITLET, FLDNAM, WSTAT, WYEAR,
      &    SLNO,LATI, LONG, ELEV,
      &    YRSIM, YRPLT, EDAT, ADAT, MDAT, YRDOY, HYEAR, 
-     &    DWAP, CWAM, HWAM, NINT(HWAH), NINT(BWAH*10.), 
-     &    NINT(EYLD), PWAM
+     &    DWAP, CWAM, HWAM, NINT(HWAH), NINT(BWAH*10.), PWAM
 
 !       RUN, TRTNUM, ROTNO, ROTOPT, REPNO (was CRPNO), 
   500   FORMAT (I9,1X,I6,3(I3),               
@@ -669,11 +668,8 @@ C-------------------------------------------------------------------
 !       YRSIM, YRPLT, EDAT, ADAT, MDAT, YRDOY, 
      &  7(1X,I7),
 
-!       DWAP, CWAM, HWAM, NINT(HWAH), NINT(BWAH*10.),
-     &  1X,I5,4(1X,I7),
-     
-!       NINT(EYLD), PWAM,
-     &  1X,I7,1X,I5)
+!       DWAP, CWAM, HWAM, NINT(HWAH), NINT(BWAH*10.), PWAM,
+     &  1X,I5,4(1X,I7),1X,I5)
 
         IF     (HWUM < -.01)  THEN; FMT = '(1X,F7.0)'
         ELSEIF (HWUM < 1.)    THEN; FMT = '(1X,F7.4)'
@@ -738,7 +734,7 @@ C-------------------------------------------------------------------
         ENDIF
 
         WRITE (NOUTDS,503) LAIX, 
-     &    FCWAM, FHWAM, NINT(HWAHF), NINT(FBWAH), FPWAM,
+     &    FCWAM, FHWAM, NINT(HWAHF), NINT(FBWAH), FPWAM, NINT(EYLDH),
      &    IRNUM, IRCM, PRCM, ETCM, EPCM, ESCM, ROCM, DRCM, SWXM, 
      &    NINUMM, NICM, NFXM, NUCM, NLCM, NIAM, NMINC, CNAM, GNAM, 
      &    N2OEC_TXT,
@@ -761,8 +757,8 @@ C-------------------------------------------------------------------
 !       LAIX,
      &  F6.1, 
                                               
-!       FCWAM, FHWAM, NINT(HWAHF), NINT(FBWAH*10.), FPWAM
-     &  5(1X,I7),
+!       FCWAM, FHWAM, NINT(HWAHF), NINT(FBWAH*10.), FPWAM, NINT(EYLDH)
+     &  6(1X,I7),
 
 !       IRNUM, IRCM, PRCM, ETCM, EPCM, ESCM, ROCM, DRCM, SWXM, 
 !       NINUMM, NICM, NFXM, NUCM, NLCM, NIAM, NMINC, CNAM, GNAM, 
@@ -803,7 +799,7 @@ C-------------------------------------------------------------------
             CALL CsvOutSumOpsum(RUN, TRTNUM, ROTNO, ROTOPT, REPNO, CROP,
      &MODEL, CONTROL%FILEX(1:8), TITLET, FLDNAM, WSTAT,WYEAR,SLNO,
      &LATI,LONG,ELEV,YRSIM,YRPLT, EDAT, ADAT, MDAT, YRDOY, HYEAR, DWAP, 
-     &CWAM, HWAM, HWAH, BWAH, EYLD,
+     &CWAM, HWAM, HWAH, BWAH, EYLDH,
 !     &PWAM, HWUM, HNUMUM, HIAM, LAIX, HNUMAM, IRNUM, IRCM, PRCM, ETCM,
      &PWAM, HWUM, HNUMUM, HIAM, LAIX, HNUMAM, FCWAM, FHWAM, HWAHF, 
      &FBWAH, FPWAM, IRNUM, IRCM, PRCM, ETCM,
@@ -1198,7 +1194,7 @@ C-------------------------------------------------------------------
         CASE ('CRST') ;SUMDAT % CRST   = VALUE(I)
             
 !       Economic Yield
-        CASE ('EYLD') ;SUMDAT % EYLD   = VALUE(I)
+        CASE ('EYLDH') ;SUMDAT % EYLDH = VALUE(I)
 
 
         END SELECT
