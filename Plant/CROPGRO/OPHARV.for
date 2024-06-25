@@ -123,7 +123,7 @@ C-----------------------------------------------------------------------
      & 'MDAT  ',  ! 5 DNR7           DMAT   Physiological Maturity
      & 'R8AT  ',  ! 6 DNR8           DHRV   Harvest Maturity (dap)
      & 'HWAM  ',  ! 7 NINT(SDWT*10)  XGWT   Seed Yield (kg/ha;dry)
-     & 'EYLDH ',  ! 8 EYLDH          EYLDH   Economic Yield
+     & 'EYLDH ',  ! 8 EYLDH          EYLDH  Economic Yield
      & 'PWAM  ',  ! 9 NINT(PODWT*10) XPDW   Pod Yield (kg/ha;dry) 
      & 'CWAA  ',  !10 NINT(CANWAA*10)XCWAA  Biomass (kg/ha) at Anth
      & 'CWAM  ',  !11 NINT(TOPWT*10) XCWT   Biomass (kg/ha) Harv Mat
