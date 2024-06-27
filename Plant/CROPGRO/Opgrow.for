@@ -24,7 +24,7 @@ C  Calls:     None
      &    RLV, RSTAGE, RTDEP, RTWT, SATFAC, SDWT, SEEDNO, 
      &    SENESCE, SLA, STMWT, SWFAC, TGRO, TGROAV, TOPWT, 
      &    TOTWT, TURFAC, VSTAGE, WTLF, WTNCAN, WTNLF, WTNST, 
-     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW)
+     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW, LINTP)
 !    &    EOP, TRWUP, WRDOTN)
 
 !-----------------------------------------------------------------------
@@ -537,6 +537,7 @@ C-----------------------------------------------------------------------
 !           plant (TOPWT) (g[seed] / g[tops])
 ! HIP     Ratio of pod weight (PODWT) to weight of above-ground portion of 
 !           plant (TOPWT) (g[pods] / g[tops])
+! LINTP   Lint Percetange (%)
 ! MODEL   Name of CROPGRO executable file 
 ! MULTI   Current seasonal simulation (=1 for first or only simulation, 
 !           =NYRS for last simulation 

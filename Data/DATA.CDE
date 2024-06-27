@@ -75,7 +75,7 @@ ETCM   ET total mm     Total season evapotranspiration, simulation-harvest (mm) 
 ETCP   ET plant seas   Total evapotranspiration, planting to harvest (mm)       .
 EWAM   Ear wt. kg/ha   Ear (grain+chaff) or eye weight at maturity (kg [dm]/ha) .
 EWUM   Eye wt. g       Eye weight (g)                                           .
-EYLDH  Eco. Yld t/ha   Economic Yield (ton/ha)                                  .
+EYLDH  Eco. Yld kg/ha  Economic Yield (kg/ha)                                   .
 FBWAH  Fr. byproduct   By-product removed during harvest fresh wt (kg/ha)       . 
 FCWAM  Fr tops wt      Fresh tops weight at maturity (kg/ha)                    .
 FDAP   Forcing dap     Forcing or flowering date (dap)                          .
@@ -115,7 +115,7 @@ L#SM   Leaf number #   Leaf number per stem at maturity                         
 L#SX   Leaf number #   Leaf number per stem, maximum                            .
 LAIH   LAI harvest     Leaf area index, at harvest                              .
 LAIX   LAI maximum     Leaf area index, maximum                                 .
-LIWAM  Lint Yld kg/ha  Lint Yield at maturity (kg [dm]/ha)                      .
+LINTP  Lint %          Lint Percentage (%)                                      .
 LONG   Longitude °     Longitude (degrees)                                      .
 LWAH   Leaf wt kg/ha   Leaf weight at harvest (kg/ha)                           .
 MDAP   Maturity day    Physiological maturity day (dap)                         .

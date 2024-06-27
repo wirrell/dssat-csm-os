@@ -39,6 +39,7 @@ C  07/08/2003 CHP Added KSEVAP for export to soil evaporation routines.
 !                 unused variables, shorten lines.
 !  11/08/2023  FO Added parameters for lint growth rate in GROW.
 !  21/06/2024  FO Added Lint Yield to OPHARV. 
+!  27/06/2024  FO Added Percent Lint to OPHARV. 
 C=======================================================================
 
       SUBROUTINE CROPGRO(CONTROL, ISWITCH, 
@@ -125,7 +126,7 @@ C=======================================================================
       REAL SATFAC, SWFAC, SDWTAH,
      &    SDRATE, SDWT, SDIDOT,
      &    SDVAR, SHVAR, SDGR, SDPROR, SHELWT,
-     &    SLA, SLDOT, STMWT, SWIDOT, SEEDNO, LINTW
+     &    SLA, SLDOT, STMWT, SWIDOT, SEEDNO, LINTW, LINTP
       REAL SLPF
       REAL SRDOT, SLAAD, SLNDOT, SSDOT, SSNDOT
       REAL TDAY, TDUMX, TDUMX2, TGROAV, TMIN, TURFAC, TAVG, TURADD,
@@ -413,7 +414,7 @@ C-----------------------------------------------------------------------
      &    RLV, RSTAGE, RTDEP, RTWT, SATFAC, SDWT, SEEDNO, 
      &    SENESCE, SLA, STMWT, SWFAC, TGRO, TGROAV, TOPWT, 
      &    TOTWT, TURFAC, VSTAGE, WTLF, WTNCAN, WTNLF, WTNST, 
-     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW)
+     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW, LINTP)
 
 !     Initialize Overview.out file.
       CALL OPHARV(CONTROL, ISWITCH, 
@@ -423,7 +424,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT, LINTW,                            !Input
+     &    YRNR7, YRPLT, LINTW, LINTP,                     !Input
      &    SDWTAH)                                         !Output
 
 !     If this is not a sequenced run, don't use any previously calculated
@@ -653,7 +654,7 @@ C-----------------------------------------------------------------------
      &    RLV, RSTAGE, RTDEP, RTWT, SATFAC, SDWT, SEEDNO, 
      &    SENESCE, SLA, STMWT, SWFAC, TGRO, TGROAV, TOPWT, 
      &    TOTWT, TURFAC, VSTAGE, WTLF, WTNCAN, WTNLF, WTNST, 
-     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW)
+     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW, LINTP)
 
       CALL OPHARV (CONTROL, ISWITCH, 
      &    AGEFAC, CANHT, CANNAA, CANWAA, CROP,            !Input
@@ -662,7 +663,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT, LINTW,                            !Input
+     &    YRNR7, YRPLT, LINTW, LINTP,                     !Input
      &    SDWTAH)                                         !Output
 
 ! Zero the value of HARVRES composite variable here 
@@ -1310,7 +1311,7 @@ C-----------------------------------------------------------------------
      &    RLV, RSTAGE, RTDEP, RTWT, SATFAC, SDWT, SEEDNO, 
      &    SENESCE, SLA, STMWT, SWFAC, TGRO, TGROAV, TOPWT, 
      &    TOTWT, TURFAC, VSTAGE, WTLF, WTNCAN, WTNLF, WTNST, 
-     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW) 
+     &    WTNSD, WTNUP, WTNFX, XLAI, YRPLT, LINTW, LINTP)
 
         IF (ISWPHO .EQ. 'Y' .OR. ISWPHO .EQ. 'H') THEN
           CALL P_CGRO (DYNAMIC, ISWITCH, 
@@ -1333,7 +1334,7 @@ C-----------------------------------------------------------------------
      &    SEEDNO, STGDOY, SWFAC, TOPWT, TURFAC,           !Input
      &    VSTAGE, WTNCAN, WTNFX, WTNSD, WTNST, WTNUP,     !Input
      &    XLAI, RSTAGE, YREMRG, YRNR1, YRNR3, YRNR5,      !Input
-     &    YRNR7, YRPLT, LINTW,                            !Input
+     &    YRNR7, YRPLT, LINTW, LINTP,                     !Input
      &    SDWTAH)                                         !Output
 
 !     Call PlantNBal only for seasonal output.
