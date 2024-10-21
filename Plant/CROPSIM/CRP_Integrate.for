@@ -461,7 +461,7 @@
           END DO
           ! CHECK IF LANC > LNCX
           ROOTNEXCESS = 0.0
-          IF (RANC.GT.RNCX)
+          IF (RANC.GT.RNCX .AND. PLTPOP .GT. 0.0)
      &      ROOTNEXCESS = (RTWT-(SENWALG(L)/(PLTPOP*10.0)))*(RANC-RNCX)
           ROOTN = ROOTN + (RNUSE(0)-GRAINNGR-ROOTNS-GROLFRTN)
      &                  - ROOTNEXCESS
@@ -1047,7 +1047,7 @@
             SDNC = 0.0
             GRAINANC = 0.0
             IF (SEEDRS.GT.0.0) SDNC = SEEDN/(SEEDRS+SDCOAT)
-            IF (GRWT.GT.0) GRAINANC = GRAINN/GRWT
+            IF (GRWT.GT.0.0) GRAINANC = GRAINN/GRWT
             LNCR = 0.0
             SNCR = 0.0
             RNCR = 0.0
