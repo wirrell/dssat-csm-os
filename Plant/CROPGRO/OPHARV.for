@@ -24,6 +24,8 @@ C  07/08/2022 GH  Add CU for Cucumber
 C  05/01/2023 GH  Add GY for Guar; SR for Strawberry
 !  06/20/2024 FO  Added Economic Yield for Evaluate and Summary
 !  06/27/2024 FO  Added Lint Percentage for Evaluate
+!  07/11/2024 FO  Added Economic standard output format
+!  10/11/2024 GH  Add AM for Amaranth
 C=======================================================================
 
       SUBROUTINE OPHARV(CONTROL, ISWITCH, 
@@ -41,7 +43,7 @@ C-----------------------------------------------------------------------
                          ! which contain control information, soil
                          ! parameters, hourly weather data.
       IMPLICIT NONE
-      EXTERNAL FIND, ERROR, STNAMES, OPVIEW, READA_Dates, 
+      EXTERNAL FIND, ERROR, STNAMES, OPVIEW, READA_Dates, ROUND,
      &  CHANGE_DESC, GetDesc, SUMVALS, EvaluateDat, TIMDIF, READA_Y4K
       SAVE
 
@@ -50,7 +52,7 @@ C-----------------------------------------------------------------------
       CHARACTER*6  SECTION
       CHARACTER*6, PARAMETER :: ERRKEY = 'OPHARV'
       CHARACTER*10 STNAME(20)
-      CHARACTER*12 FILEA
+      CHARACTER*12 FILEA, FMT
       CHARACTER*30 FILEIO
 	    CHARACTER*80 PATHEX
 
@@ -60,13 +62,13 @@ C-----------------------------------------------------------------------
       INTEGER IFLR, IEMRG, IFPD, IFSD, IHRV, IMAT, ISENS
       INTEGER LINC, LNUM, LUNIO, RUN, TIMDIF, TRTNUM, YIELD, YREMRG
       INTEGER YRNR1,YRNR3,YRNR5,YRNR7,MDATE,YRDOY, YRPLT,YRSIM
-      INTEGER RSTAGE
+      INTEGER RSTAGE, iEYLDH
       INTEGER TRT_ROT
       INTEGER STGDOY(20)
 
       REAL BIOMAS, BWAH, CANHT, CANNAA, CANWAA, HI, HWAH, HWAM
       REAL LAIMX, PCLSD, PCNSD, PODWT, PODNO, PSDWT, PSPP
-      REAL SDRATE, SDWT, SDWTAH, SEEDNO, EYLDH, LINTW, LINTP
+      REAL SDRATE, SDWT, SDWTAH, SEEDNO, EYLDH, ROUND, LINTW, LINTP
       REAL THRES, TOPWT, VSTAGE
       REAL WTNCAN, WTNFX, WTNSD, WTNST, WTNUP, XLAI
       REAL, DIMENSION(2) :: HARVFRAC
@@ -124,7 +126,7 @@ C-----------------------------------------------------------------------
      & 'MDAT  ',  ! 5 DNR7           DMAT   Physiological Maturity
      & 'R8AT  ',  ! 6 DNR8           DHRV   Harvest Maturity (dap)
      & 'HWAM  ',  ! 7 NINT(SDWT*10)  XGWT   Seed Yield (kg/ha;dry)
-     & 'EYLDH ',  ! 8 EYLDH          EYLDH  Economic Yield (kg/ha)
+     & 'EYLDH ',  ! 8 EYLDH          EYLDH  Economic Yield
      & 'LINTP ',  ! 9 LINTP          LINTP  Percent Lint (%)
      & 'PWAM  ',  !10 NINT(PODWT*10) XPDW   Pod Yield (kg/ha;dry) 
      & 'CWAA  ',  !11 NINT(CANWAA*10)XCWAA  Biomass (kg/ha) at Anth
@@ -224,14 +226,14 @@ C-----------------------------------------------------------------------
       Measured  = ' '
       YIELD  = 0
       BIOMAS = 0.0
-      
+
 !     Establish #, names of stages for environmental & stress summary
       PlantStres % ACTIVE = .FALSE.
       PlantStres % StageName = '                       '
       SELECT CASE (CROP)
-      CASE ('BC','BG','BN','CH','CI','CN','CO','CP','CU',
-     &      'FB','GB','GY','LT','PE','PN','PP','PR','QU',
-     &      'SB','SF','SR','SU','TM','VB')
+      CASE ('AM','BC','BG','BN','CH','CI','CN','CO','CP',
+     &      'CU','FB','GB','GY','LT','PE','PN','PP',
+     &      'PR','QU','SB','SF','SR','SU','TM','VB')
         PlantStres % NSTAGES = 4
         PlantStres % StageName(1)  = 'Emergence -First Flower'
         PlantStres % StageName(2)  = 'First Flower-First Seed'
@@ -274,9 +276,9 @@ C-----------------------------------------------------------------------
 
 !     Set ACTIVE variable to indicate that current phase is active
       SELECT CASE (CROP)
-      CASE ('BC','BG','BN','CH','CI','CN','CO','CP','CU',
-     &      'FB','GB','GY','LT','PE','PN','PP','PR','QU',
-     &      'SB','SF','SR','SU','TM','VB')
+      CASE ('AM','BC','BG','BN','CH','CI','CN','CO','CP',
+     &      'CU','FB','GB','GY','LT','PE','PN','PP',
+     &      'PR','QU','SB','SF','SR','SU','TM','VB')
         IF (YRDOY > STGDOY(1) .AND. YRDOY <= STGDOY(5)) THEN
           PlantStres % ACTIVE(1) = .TRUE.
         ENDIF
@@ -354,7 +356,27 @@ C-----------------------------------------------------------------------
         ! Units from g/m2 to kg/ha
         EYLDH = LINTW*10.0
       ENDIF
-
+      
+      ! 2024-07-11 FO - Economic standard output format
+      IF    (EYLDH < 0.999) THEN; FMT = '(F8.3)'
+      ELSEIF(EYLDH < 10.0)  THEN; FMT = '(F8.2)'
+      ELSEIF(EYLDH < 100.0) THEN; FMT = '(F8.1)'
+      ELSEIF(EYLDH < 1000.0)THEN
+        iEYLDH = INT(EYLDH)
+        FMT = '(I8)'
+      ELSEIF(EYLDH < 10000.0)THEN
+        EYLDH = ROUND(EYLDH, -1)
+        iEYLDH = INT(EYLDH)
+        FMT = '(I8)'
+      ELSEIF(EYLDH < 100000.0)THEN
+        EYLDH = ROUND(EYLDH, -2)
+        iEYLDH = INT(EYLDH)
+        FMT = '(I8)'
+      ELSE
+        EYLDH = ROUND(EYLDH, -2)
+        iEYLDH = INT(EYLDH)
+        FMT = '(I8)'
+      ENDIF
 !-----------------------------------------------------------------------
 !     Read Measured (measured) data from FILEA
 !-----------------------------------------------------------------------
@@ -481,8 +503,13 @@ C-----------------------------------------------------------------------
       WRITE(Simulated(6),' (I8)') DNR8;  WRITE(Measured(6),'(I8)') DHRV
       WRITE(Simulated(7),' (I8)') NINT(SDWT*10);  
                                   WRITE(Measured(7),'(A8)') TRIM(X(7))
-      WRITE(Simulated(8),'(I8)') NINT(EYLDH); 
+      IF(EYLDH < 100.0) THEN
+        WRITE(Simulated(8),FMT) EYLDH; 
                                   WRITE(Measured(8),'(A8)')TRIM(X(8))
+      ELSE
+        WRITE(Simulated(8),FMT) iEYLDH; 
+                                  WRITE(Measured(8),'(A8)')TRIM(X(8))
+      ENDIF
       WRITE(Simulated(9),'(F8.1)') LINTP; 
                                   WRITE(Measured(9),'(A8)')TRIM(X(9))
       WRITE(Simulated(10),' (I8)') NINT(PODWT*10); 
@@ -491,36 +518,38 @@ C-----------------------------------------------------------------------
                                   WRITE(Measured(11),'(A8)')TRIM(X(11))
       WRITE(Simulated(12),'(I8)') NINT(TOPWT*10); 
                                   WRITE(Measured(12),'(A8)')TRIM(X(12))
-      WRITE(Simulated(13),'(I8)') NINT(TOPWT-SDWT)*10; 
+      WRITE(Simulated(13),'(I8)') NINT(TOPWT*10); 
                                   WRITE(Measured(13),'(A8)')TRIM(X(13))
-      WRITE(Simulated(14),'(I8)') NINT(SEEDNO);   
+      WRITE(Simulated(14),'(I8)') NINT(TOPWT-SDWT)*10; 
                                   WRITE(Measured(14),'(A8)')TRIM(X(14))
-      WRITE(Simulated(15),'(F8.4)')PSDWT;
+      WRITE(Simulated(15),'(I8)') NINT(SEEDNO);   
                                   WRITE(Measured(15),'(A8)')TRIM(X(15))
-      WRITE(Simulated(16),'(F8.2)')PSPP; 
+      WRITE(Simulated(16),'(F8.4)')PSDWT;
                                   WRITE(Measured(16),'(A8)')TRIM(X(16))
-      WRITE(Simulated(17),'(F8.3)')HI;   
+      WRITE(Simulated(17),'(F8.2)')PSPP; 
                                   WRITE(Measured(17),'(A8)')TRIM(X(17))
-      WRITE(Simulated(18),'(F8.2)')THRES;
+      WRITE(Simulated(18),'(F8.3)')HI;   
                                   WRITE(Measured(18),'(A8)')TRIM(X(18))
-      WRITE(Simulated(19),'(F8.2)')LAIMX;
+      WRITE(Simulated(19),'(F8.2)')THRES;
                                   WRITE(Measured(19),'(A8)')TRIM(X(19))
-      WRITE(Simulated(20),'(F8.2)')VSTAGE;
+      WRITE(Simulated(20),'(F8.2)')LAIMX;
                                   WRITE(Measured(20),'(A8)')TRIM(X(20))
-      WRITE(Simulated(21),'(F8.2)')CANHT;
+      WRITE(Simulated(21),'(F8.2)')VSTAGE;
                                   WRITE(Measured(21),'(A8)')TRIM(X(21))
-      WRITE(Simulated(22),'(I8)') NINT(CANNAA*10);
+      WRITE(Simulated(22),'(F8.2)')CANHT;
                                   WRITE(Measured(22),'(A8)')TRIM(X(22))
-      WRITE(Simulated(23),'(I8)') NINT(WTNCAN*10);
+      WRITE(Simulated(23),'(I8)') NINT(CANNAA*10);
                                   WRITE(Measured(23),'(A8)')TRIM(X(23))
-      WRITE(Simulated(24),'(I8)') NINT(WTNST*10); 
+      WRITE(Simulated(24),'(I8)') NINT(WTNCAN*10);
                                   WRITE(Measured(24),'(A8)')TRIM(X(24))
-      WRITE(Simulated(25),'(I8)') NINT(WTNSD*10); 
+      WRITE(Simulated(25),'(I8)') NINT(WTNST*10); 
                                   WRITE(Measured(25),'(A8)')TRIM(X(25))
-      WRITE(Simulated(26),'(F8.2)')PCNSD;
+      WRITE(Simulated(26),'(I8)') NINT(WTNSD*10); 
                                   WRITE(Measured(26),'(A8)')TRIM(X(26))
-      WRITE(Simulated(27),'(F8.2)')PCLSD;
+      WRITE(Simulated(27),'(F8.2)')PCNSD;
                                   WRITE(Measured(27),'(A8)')TRIM(X(27))
+      WRITE(Simulated(28),'(F8.2)')PCLSD;
+                                  WRITE(Measured(28),'(A8)')TRIM(X(28))
       ENDIF  
 
       IF (CONTROL % ERRCODE > 0) THEN
@@ -655,8 +684,8 @@ C-----------------------------------------------------------------------
       ENDDO
 
       SELECT CASE (CROP)
-      CASE ('BC','BN','CH','CI','CN','CP','CU','FB','GB','GY','PE',
-     &      'PP','PR','SB','SR','TM','VB','LT')
+      CASE ('AM','BC','BN','CH','CI','CN','CP','CU','FB','GB','GY',
+     &      'PE','PP','PR','SB','SR','TM','VB','LT')
 !     For stage-dependant irrigation - send GSTAGE back to irrig routine
         STNAME(1) = 'Emergence '    !; GSTAGE(1) = "GS001"
         STNAME(2) = 'Unifoliate'
