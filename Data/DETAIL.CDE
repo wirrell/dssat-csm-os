@@ -684,7 +684,7 @@ FH302    Cultivated, poor mgmt, init degraded land                            IB
  200     Weather data error                                                   IB
  999     Unspecified error condition                                          IB
  
- *Applications
+*Applications
 @CDE     DESCRIPTION                                                          SO
 SN       Climate change                                                       IB
 FX       Yield/In-season forecast                                             IB
