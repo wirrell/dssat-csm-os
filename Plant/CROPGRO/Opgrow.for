@@ -161,9 +161,14 @@ C  Calls:     None
 
         WRITE (NOUTDG,200, ADVANCE='NO')
   200   FORMAT('@YEAR DOY   DAS   DAP',
-     &         '   L#SD   GSTD   LAID   LWAD   SWAD   GWAD',
-     &         '  LINTW  LINTP',
-     &         '   RWAD   VWAD   CWAD   G#AD    GWGD   HIAD   PWAD',
+     &         '   L#SD   GSTD   LAID   LWAD   SWAD   GWAD')
+
+        IF(CROP .EQ. 'CO') THEN
+         WRITE (NOUTDG,'(A)', ADVANCE='NO') '  LIWAM  LINTP'
+        ENDIF
+
+        WRITE (NOUTDG,205, ADVANCE='NO')
+  205   FORMAT('   RWAD   VWAD   CWAD   G#AD    GWGD   HIAD   PWAD',
      &         '   P#AD   WSPD   WSGD   NSTD')
 
 !        IF (ISWPHO .NE. 'N') THEN
@@ -363,21 +368,31 @@ C-----------------------------------------------------------------------
 
           VWAD = NINT(WTLF*10. + STMWT*10.)
           
-          IF(SDWT .GT. 0.0) THEN
+          IF(CROP .EQ. 'CO' .AND. SDWT .GT. 0.0) THEN
             LINTP = (LINTW*100.)/SDWT
           ENDIF
 
           IF (FMOPT == 'A' .OR. FMOPT == ' ') THEN   ! VSH
-          WRITE (NOUTDG,310, ADVANCE='NO')
+          WRITE (NOUTDG,300, ADVANCE='NO')
      &        YEAR, DOY, DAS, DAP, VSTAGE, RSTAGE, XLAI,
-     &        NINT(WTLF*10.), NINT(STMWT*10.), NINT(SDWT*10.),
-     &        NINT(LINTW*10.), LINTP,
+     &        NINT(WTLF*10.), NINT(STMWT*10.), NINT(SDWT*10.)
+     
+  300     FORMAT (1X,I4,1X,I3.3,2(1X,I5),
+     &        1X,F6.1,1X,I6,1X,F6.3,3(1X,I6))
+
+          IF(CROP .EQ. 'CO') THEN
+            WRITE (NOUTDG,305, ADVANCE='NO')
+     &        NINT(LINTW*10.), LINTP
+  305       FORMAT (1X,I6,1X,F6.2)
+          ENDIF
+
+          WRITE (NOUTDG,310, ADVANCE='NO')
      &        NINT(RTWT*10.), VWAD, NINT(TOPWT*10.), NINT(SEEDNO), 
      &        SDSIZE, HI, NINT(PODWT*10.), NINT(PODNO), SWF_AV, TUR_AV,
      &        NST_AV
-  310     FORMAT (1X,I4,1X,I3.3,2(1X,I5),
-     &        1X,F6.1,1X,I6,1X,F6.3,4(1X,I6),1X,F6.2,4(1X,I6),
-     &        1X,F7.1,1X,F6.3,2(1X,I6),3(1X,F6.3))
+  310     FORMAT (4(1X,I6),
+     &        1X,F7.1,1X,F6.3,2(1X,I6),2(1X,F6.3),
+     &        1X,F6.3)
 
 !          IF (ISWPHO .NE. 'N') THEN
             WRITE (NOUTDG,'(2(1X,F6.3))', ADVANCE='NO') PS1_AV, PS2_AV
@@ -404,7 +419,8 @@ C-----------------------------------------------------------------------
       IF (FMOPT == 'C') THEN
          CALL CsvOut(EXPNAME,CONTROL%RUN, CONTROL%TRTNUM,CONTROL%ROTNUM
      &,CONTROL%REPNO, YEAR, DOY, DAS, DAP, VSTAGE, RSTAGE, XLAI, 
-     &WTLF, STMWT, SDWT, RTWT, VWAD, TOPWT, SEEDNO, SDSIZE, HI, PODWT,
+     &WTLF, STMWT, SDWT, LINTW, LINTP,
+     &RTWT, VWAD, TOPWT, SEEDNO, SDSIZE, HI, PODWT,
      &PODNO, SWF_AV, TUR_AV, NST_AV, PS1_AV, PS2_AV, KST_AV, EXW_AV,
      &PCNLP, SHELPC, HIP, PODWTD, SLAP, CANHT, CANWH,
      &DWNOD, RTDEP, N_LYR, RLV, CUMSENSURF, CUMSENSOIL,

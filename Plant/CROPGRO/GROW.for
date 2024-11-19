@@ -236,9 +236,11 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     Net Lint growth rate
 C-----------------------------------------------------------------------
-      CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,                !Input
+      IF(CROP .EQ. 'CO') THEN
+        CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,              !Input
      &    WSDDOT, TAVG, TURFAC, NSTRES,                          !Input
      &    LTDOT)                                                 !Output
+      ENDIF
 !***********************************************************************
 !***********************************************************************
 !     Seasonal initialization - run once per season
@@ -368,9 +370,11 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     Net Lint growth rate
 C-----------------------------------------------------------------------
-      CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,                !Input
+      IF(CROP .EQ. 'CO') THEN
+        CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,              !Input
      &    WSDDOT, TAVG, TURFAC, NSTRES,                          !Input
      &    LTDOT)                                                 !Output
+      ENDIF
 !***********************************************************************
 !***********************************************************************
 !     EMERGENCE CALCULATIONS - Performed once per season upon emergence
@@ -571,13 +575,16 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     Net Lint growth rate
 C-----------------------------------------------------------------------
-      CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,                !Input
+      IF(CROP .EQ. 'CO') THEN
+        CALL LTGROW(DYNAMIC, FILECC, FILEGC, ECONO,              !Input
      &    WSDDOT, TAVG, TURFAC, NSTRES,                          !Input
      &    LTDOT)                                                 !Output
-      
-      IF (LTDOT .LT. 0.0) THEN
-        LTDOT = MAX(LTDOT, -LINTW)
+
+        IF (LTDOT .LT. 0.0) THEN
+            LTDOT = MAX(LTDOT, -LINTW)
+        ENDIF
       ENDIF
+      
 C-----------------------------------------------------------------------
 C     Net nodule growth rate
 C-----------------------------------------------------------------------

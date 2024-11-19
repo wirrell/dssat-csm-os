@@ -353,8 +353,8 @@ C-----------------------------------------------------------------------
       
       ! 2024-06-20 FO - Economic Yield for Cotton.
       IF(CROP .EQ. 'CO') THEN
-        ! Units from g/m2 to kg/ha
-        EYLDH = LINTW*10.0
+        ! Units from g/m2 to ton/ha
+        EYLDH = LINTW / 100
       ENDIF
       
       ! 2024-07-11 FO - Economic standard output format
@@ -510,46 +510,46 @@ C-----------------------------------------------------------------------
         WRITE(Simulated(8),FMT) iEYLDH; 
                                   WRITE(Measured(8),'(A8)')TRIM(X(8))
       ENDIF
-      WRITE(Simulated(9),'(F8.1)') LINTP; 
+      IF(CROP .EQ. 'CO') THEN
+        WRITE(Simulated(9),'(F8.1)') LINTP; 
                                   WRITE(Measured(9),'(A8)')TRIM(X(9))
+      ENDIF
       WRITE(Simulated(10),' (I8)') NINT(PODWT*10); 
                                   WRITE(Measured(10),'(A8)') TRIM(X(10))
       WRITE(Simulated(11), '(I8)') NINT(CANWAA*10);
                                   WRITE(Measured(11),'(A8)')TRIM(X(11))
       WRITE(Simulated(12),'(I8)') NINT(TOPWT*10); 
                                   WRITE(Measured(12),'(A8)')TRIM(X(12))
-      WRITE(Simulated(13),'(I8)') NINT(TOPWT*10); 
+      WRITE(Simulated(13),'(I8)') NINT(TOPWT-SDWT)*10; 
                                   WRITE(Measured(13),'(A8)')TRIM(X(13))
-      WRITE(Simulated(14),'(I8)') NINT(TOPWT-SDWT)*10; 
+      WRITE(Simulated(14),'(I8)') NINT(SEEDNO);   
                                   WRITE(Measured(14),'(A8)')TRIM(X(14))
-      WRITE(Simulated(15),'(I8)') NINT(SEEDNO);   
+      WRITE(Simulated(15),'(F8.4)')PSDWT;
                                   WRITE(Measured(15),'(A8)')TRIM(X(15))
-      WRITE(Simulated(16),'(F8.4)')PSDWT;
+      WRITE(Simulated(16),'(F8.2)')PSPP; 
                                   WRITE(Measured(16),'(A8)')TRIM(X(16))
-      WRITE(Simulated(17),'(F8.2)')PSPP; 
+      WRITE(Simulated(17),'(F8.3)')HI;   
                                   WRITE(Measured(17),'(A8)')TRIM(X(17))
-      WRITE(Simulated(18),'(F8.3)')HI;   
+      WRITE(Simulated(18),'(F8.2)')THRES;
                                   WRITE(Measured(18),'(A8)')TRIM(X(18))
-      WRITE(Simulated(19),'(F8.2)')THRES;
+      WRITE(Simulated(19),'(F8.2)')LAIMX;
                                   WRITE(Measured(19),'(A8)')TRIM(X(19))
-      WRITE(Simulated(20),'(F8.2)')LAIMX;
+      WRITE(Simulated(20),'(F8.2)')VSTAGE;
                                   WRITE(Measured(20),'(A8)')TRIM(X(20))
-      WRITE(Simulated(21),'(F8.2)')VSTAGE;
+      WRITE(Simulated(21),'(F8.2)')CANHT;
                                   WRITE(Measured(21),'(A8)')TRIM(X(21))
-      WRITE(Simulated(22),'(F8.2)')CANHT;
+      WRITE(Simulated(22),'(I8)') NINT(CANNAA*10);
                                   WRITE(Measured(22),'(A8)')TRIM(X(22))
-      WRITE(Simulated(23),'(I8)') NINT(CANNAA*10);
+      WRITE(Simulated(23),'(I8)') NINT(WTNCAN*10);
                                   WRITE(Measured(23),'(A8)')TRIM(X(23))
-      WRITE(Simulated(24),'(I8)') NINT(WTNCAN*10);
+      WRITE(Simulated(24),'(I8)') NINT(WTNST*10); 
                                   WRITE(Measured(24),'(A8)')TRIM(X(24))
-      WRITE(Simulated(25),'(I8)') NINT(WTNST*10); 
+      WRITE(Simulated(25),'(I8)') NINT(WTNSD*10); 
                                   WRITE(Measured(25),'(A8)')TRIM(X(25))
-      WRITE(Simulated(26),'(I8)') NINT(WTNSD*10); 
+      WRITE(Simulated(26),'(F8.2)')PCNSD;
                                   WRITE(Measured(26),'(A8)')TRIM(X(26))
-      WRITE(Simulated(27),'(F8.2)')PCNSD;
+      WRITE(Simulated(27),'(F8.2)')PCLSD;
                                   WRITE(Measured(27),'(A8)')TRIM(X(27))
-      WRITE(Simulated(28),'(F8.2)')PCLSD;
-                                  WRITE(Measured(28),'(A8)')TRIM(X(28))
       ENDIF  
 
       IF (CONTROL % ERRCODE > 0) THEN
