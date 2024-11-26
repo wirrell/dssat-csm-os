@@ -340,6 +340,7 @@ set(
         "Plant/CROPGRO/INCOMP.for"
         "Plant/CROPGRO/Ipphenol.for"
         "Plant/CROPGRO/IPPLNT.for"
+        "Plant/CROPGRO/LTGROW.for"
         "Plant/CROPGRO/MOBIL.for"
         "Plant/CROPGRO/NFIX.for"
         "Plant/CROPGRO/NUPTAK.for"
