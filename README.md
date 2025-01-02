@@ -13,7 +13,7 @@ application program that comprises crop simulation models for more than 45 crops
 supported by data base management programs for soil, weather, crop management, and experimental data, and by utilities and application 
 programs. The crop simulation models simulate growth and development and predict yield, yield components and many other traits and variables as a 
 function of the soil-plant-atmosphere dynamics.
-
+<br>
 Questions about usage of the DSSAT Crop Modeling Ecosystem <a href="http://dssat.net/contact-us">[contact us]</a>.
 
 Do not know how to use DSSAT? Consider participating in the <a href="https://dssat.net/training/upcoming-workshop/">[upcoming DSSAT training workshop]</a>
